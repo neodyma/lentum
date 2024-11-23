@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/lentum.json`.
  */
 export type Lentum = {
-  "address": "DLw5fJNrrBCWoy75aukoDApBZm4MEvaWCvPJoqtLSg1p",
+  "address": "Hc6k9QpHwpvG7jndx9EEE42M28DZ6EHEedogVCyjt7mL",
   "metadata": {
     "name": "lentum",
     "version": "0.1.0",
@@ -138,15 +138,42 @@ export type Lentum = {
     {
       "name": "lentum",
       "discriminator": [
-        255,
-        176,
-        4,
-        245,
-        188,
-        253,
-        124,
-        25
+        82,
+        125,
+        86,
+        154,
+        182,
+        24,
+        190,
+        21
       ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "overflow",
+      "msg": "Overflow occurred."
+    },
+    {
+      "code": 6001,
+      "name": "underflow",
+      "msg": "Underflow occurred."
+    },
+    {
+      "code": 6002,
+      "name": "maxDepositsExceeded",
+      "msg": "Maximum number of deposits exceeded."
+    },
+    {
+      "code": 6003,
+      "name": "depositNotFound",
+      "msg": "Deposit not found."
+    },
+    {
+      "code": 6004,
+      "name": "insufficientAvailableDeposits",
+      "msg": "Insufficient available deposits."
     }
   ],
   "types": [
