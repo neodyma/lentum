@@ -67,7 +67,7 @@ pub mod market {
             if deposit.available < amount {
                 return Err(ErrorCode::InsufficientAvailableDeposits.into());
             }
-
+            
             // TODO collateral ratio checks
 
             deposit.amount = deposit.amount.checked_sub(amount).ok_or(ErrorCode::Underflow)?;

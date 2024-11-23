@@ -1,52 +1,57 @@
-# React + TypeScript + Vite
+# Lentum
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# User Journey
 
-Currently, two official plugins are available:
+## 1. Deposit Assets
+Step 1: Connect your wallet.
+Step 2: Choose the asset (e.g., Sol, USDC, Bonk) to deposit and specify the amount.
+Step 3: Approve the transaction and confirm the deposit.
+### Contract Interaction:
+Get LTokens get minted() when deposited, they earn intrest and can be brunded when repaid()
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 2. View Portfolio Parameters
+After depositing, the platform calculates personalized risk metrics based on your portfolio:
+### Dynamic Parameters:
+TLV, liqThreshold, liqBonus, APYDeposit, APYBorrow
+## 3. Borrow Against Portfolio
+Step 1: Choose the asset you want to borrow.
+Step 2: Specify the borrowing amount.
+The app calcuates on the percentage of ongoing loans the percentage of colateral to be used. based on the ration conside the usd amount of all coletarl to the pair  calcuate the risk parmaters and the tlv allowed.
+Step 3: Approve the transaction and confirm.
+Contract Interaction:
 
-## Expanding the ESLint configuration
+### 4. Portfolio Health Monitoring
+The platform provides a dashboard to monitor:
+Real-time LTV
+Liquidation thresholds
+Asset performance
+Contract Interaction:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Calls the getPortfolioData() function on the Analytics Contract (AC).
+## 5. Repay Loans or Withdraw Collateral
+Step 1: Repay borrowed assets burn bororw token
+Step 2: Withdraw collateral if portfolio health allows.
 
-- Configure the top-level `parserOptions` property like this:
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+Calls the repay() or withdrawCollateral() function on the respective contracts.
+Technical Details
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Contracts Overview
+Contract Name	Purpose
+Asset Vault Contract (AVC)	Manages user deposits and collateral balances.
+Portfolio Risk Optimization Contract (PROC)	Calculates and updates risk metrics dynamically.
+Loan Contract (LC)	Handles borrowing and repayments.
+Analytics Contract (AC)	Provides real-time portfolio data and metrics.
+Parameter Calculation
+LTV: Based on deposit amount, asset volatility, and liquidity.
+Formula: LTV = (Collateral Value * Collateral Weight) / Debt
+liqThreshold: Adjusted dynamically by PROC based on portfolio diversification.
+Formula: liqThreshold = Base Threshold + Volatility Modifier
+Reserve Factor: Derived from the overall risk profile of the portfolio.
+Formula: Reserve Factor = Average Risk Score / Total Portfolio Value
+Testing and Debugging
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
-
-# template-react-vite-tailwind
+Clone the repository and deploy the contracts on a local Ethereum testnet (e.g., Hardhat or Ganache).
+Run unit tests for each contract interaction:
+npm run test
+Deploy to a testnet (e.g., Goerli) and verify interactions with a front-end or CLI.
