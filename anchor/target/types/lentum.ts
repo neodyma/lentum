@@ -173,7 +173,7 @@ export type Lentum = {
     {
       "code": 6004,
       "name": "insufficientAvailableDeposits",
-      "msg": "Insufficient available deposits."
+      "msg": "Not enough available deposits."
     }
   ],
   "types": [

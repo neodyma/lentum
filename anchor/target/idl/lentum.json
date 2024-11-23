@@ -167,7 +167,7 @@
     {
       "code": 6004,
       "name": "InsufficientAvailableDeposits",
-      "msg": "Insufficient available deposits."
+      "msg": "Not enough available deposits."
     }
   ],
   "types": [
