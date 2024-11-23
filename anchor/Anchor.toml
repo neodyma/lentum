@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-lentum = "DLw5fJNrrBCWoy75aukoDApBZm4MEvaWCvPJoqtLSg1p"
+lentum = "Hc6k9QpHwpvG7jndx9EEE42M28DZ6EHEedogVCyjt7mL"
 
 [registry]
 url = "https://api.apr.dev"
