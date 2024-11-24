@@ -84,7 +84,7 @@ export function useLentumProgramAccount({ account }: { account: PublicKey }) {
         .accountsPartial({
           market: marketPDA,
           userAccount: account, // User's public key
-          userLenAccount: account, // TODO change this
+          userLenAccount: undefined, // TODO change this
           userTokenAccount, // Associated token account for the user
           lenMint: new PublicKey("AM2UdPbBLBCfr9sShJicSTPSQM8ryq8faioD2oQ6G7t6"), // The mint of the token being deposited
           tokenProgram: TOKEN_PROGRAM_ID,
@@ -111,7 +111,7 @@ export function useLentumProgramAccount({ account }: { account: PublicKey }) {
         .accountsPartial({
           market: marketPDA,
           userAccount: account, // User's public key
-          userLenAccount: account, // TODO change this
+          userLenAccount: undefined, // TODO change this
           userTokenAccount, // Associated token account for the user
           lenMint: new PublicKey("AM2UdPbBLBCfr9sShJicSTPSQM8ryq8faioD2oQ6G7t6"), // The mint of the token being deposited
           tokenProgram: TOKEN_PROGRAM_ID,
