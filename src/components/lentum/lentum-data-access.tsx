@@ -19,7 +19,7 @@ export function useLentumProgram() {
 
   const accounts = useQuery({
     queryKey: ['lentum', 'all', { cluster }],
-    queryFn: () => program.account.lentum.all(),
+    queryFn: () => program.account.market.all(),
   })
 
   const getProgramAccount = useQuery({
@@ -29,13 +29,23 @@ export function useLentumProgram() {
 
   const initialize = useMutation({
     mutationKey: ['lentum', 'initialize', { cluster }],
-    mutationFn: (keypair: Keypair) =>
-      program.methods.initialize().accounts({ lentum: keypair.publicKey }).signers([keypair]).rpc(),
+    mutationFn: (keypair: Keypair) => {
+      const [marketPDA] = PublicKey.findProgramAddressSync(
+        [Buffer.from("lentumMarket")],
+        program.programId
+      )
+      return program.methods.initializeMarket()
+        .accountsPartial({
+          market: marketPDA,
+        })
+        .signers([keypair])
+        .rpc()
+    },
     onSuccess: (signature) => {
       transactionToast(signature)
       return accounts.refetch()
     },
-    onError: () => toast.error('Failed to initialize account'),
+    onError: () => toast.error('Failed to initialize market.'),
   })
 
   return {
