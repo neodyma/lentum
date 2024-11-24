@@ -73,7 +73,7 @@ export function useLentumProgramAccount({ account }: { account: PublicKey }) {
 
   const depositMutation = useMutation({
     mutationKey: ['lentum', 'deposit', { cluster, account }],
-    mutationFn: async ({ amount, userTokenAccount, depositTokenMint }: { amount: number; userTokenAccount: PublicKey; depositTokenMint: PublicKey }) => {
+    mutationFn: async ({ amount, userTokenAccount, lenTokenMint }: { amount: number; userTokenAccount: PublicKey; lenTokenMint: PublicKey }) => {
       const [marketPDA] = PublicKey.findProgramAddressSync(
         [Buffer.from("lentumMarket")],
         program.programId
@@ -100,7 +100,7 @@ export function useLentumProgramAccount({ account }: { account: PublicKey }) {
 
   const withdrawMutation = useMutation({
     mutationKey: ['lentum', 'withdraw', { cluster, account }],
-    mutationFn: async ({ amount, userTokenAccount, depositTokenMint }: { amount: number; userTokenAccount: PublicKey; depositTokenMint: PublicKey }) => {
+    mutationFn: async ({ amount, userTokenAccount, lenTokenMint }: { amount: number; userTokenAccount: PublicKey; lenTokenMint: PublicKey }) => {
       const [marketPDA] = PublicKey.findProgramAddressSync(
         [Buffer.from("lentumMarket")],
         program.programId
