@@ -13,6 +13,7 @@ export interface Coin {
     liquidationThreshold1: number;
     liquidationThreshold2: number;
     liquidationPenalty: number;
+    tokenBorrowAddress: string;
     LTV: number;
     depositAmount: number;
     borrowAmount: number;
