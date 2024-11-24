@@ -98,38 +98,38 @@ export function useLentumProgramAccount({ account }: { account: PublicKey }) {
     onError: () => toast.error('Failed to complete deposit.'),
   })
 
-  const decrementMutation = useMutation({
-    mutationKey: ['lentum', 'decrement', { cluster, account }],
-    mutationFn: () => program.methods.decrement().accounts({ lentum: account }).rpc(),
-    onSuccess: (tx) => {
-      transactionToast(tx)
-      return accountQuery.refetch()
+  const withdrawMutation = useMutation({
+    mutationKey: ['lentum', 'withdraw', { cluster, account }],
+    mutationFn: async ({ amount, userTokenAccount, depositTokenMint }: { amount: number; userTokenAccount: PublicKey; depositTokenMint: PublicKey }) => {
+      const [marketPDA] = PublicKey.findProgramAddressSync(
+        [Buffer.from("lentumMarket")],
+        program.programId
+      );
+
+      return program.methods
+        .withdrawTokens(amount) // Pass the deposit amount
+        .accountsPartial({
+          market: marketPDA,
+          userAccount: account, // User's public key
+          userLenAccount: account, // TODO change this
+          userTokenAccount, // Associated token account for the user
+          lenMint: new PublicKey("AM2UdPbBLBCfr9sShJicSTPSQM8ryq8faioD2oQ6G7t6"), // The mint of the token being deposited
+          tokenProgram: TOKEN_PROGRAM_ID,
+        })
+        .rpc();
     },
+    onSuccess: (tx) => {
+      transactionToast(tx);
+      return accountQuery.refetch();
+    },
+    onError: () => toast.error('Failed to complete withdraw.'),
   })
 
-  const incrementMutation = useMutation({
-    mutationKey: ['lentum', 'increment', { cluster, account }],
-    mutationFn: () => program.methods.increment().accounts({ lentum: account }).rpc(),
-    onSuccess: (tx) => {
-      transactionToast(tx)
-      return accountQuery.refetch()
-    },
-  })
 
-  const setMutation = useMutation({
-    mutationKey: ['lentum', 'set', { cluster, account }],
-    mutationFn: (value: number) => program.methods.set(value).accounts({ lentum: account }).rpc(),
-    onSuccess: (tx) => {
-      transactionToast(tx)
-      return accountQuery.refetch()
-    },
-  })
 
   return {
     accountQuery,
-    closeMutation,
-    decrementMutation,
-    incrementMutation,
-    setMutation,
+    depositMutation,
+    withdrawMutation,
   }
 }
