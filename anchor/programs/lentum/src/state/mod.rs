@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod borrow;
 pub use borrow::*;
 
