@@ -107,7 +107,7 @@ export function useLentumProgramAccount({ account }: { account: PublicKey }) {
       );
 
       return program.methods
-        .withdrawTokens(amount) // Pass the deposit amount
+        .withdrawTokens(amount) // Pass the withdraw amount
         .accountsPartial({
           market: marketPDA,
           userAccount: account, // User's public key
