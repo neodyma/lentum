@@ -8,6 +8,7 @@ import toast from 'react-hot-toast'
 import { useCluster } from '../cluster/cluster-data-access'
 import { useAnchorProvider } from '../solana/solana-provider'
 import { useTransactionToast } from '../ui/ui-layout'
+import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
 
 export function useLentumProgram() {
   const { connection } = useConnection()
@@ -62,18 +63,39 @@ export function useLentumProgramAccount({ account }: { account: PublicKey }) {
   const transactionToast = useTransactionToast()
   const { program, accounts } = useLentumProgram()
 
+  const provider = useAnchorProvider()
+
+
   const accountQuery = useQuery({
     queryKey: ['lentum', 'fetch', { cluster, account }],
-    queryFn: () => program.account.lentum.fetch(account),
+    queryFn: () => program.account.market.fetch(account),
   })
 
-  const closeMutation = useMutation({
-    mutationKey: ['lentum', 'close', { cluster, account }],
-    mutationFn: () => program.methods.close().accounts({ lentum: account }).rpc(),
-    onSuccess: (tx) => {
-      transactionToast(tx)
-      return accounts.refetch()
+  const depositMutation = useMutation({
+    mutationKey: ['lentum', 'deposit', { cluster, account }],
+    mutationFn: async ({ amount, userTokenAccount, depositTokenMint }: { amount: number; userTokenAccount: PublicKey; depositTokenMint: PublicKey }) => {
+      const [marketPDA] = PublicKey.findProgramAddressSync(
+        [Buffer.from("lentumMarket")],
+        program.programId
+      );
+
+      return program.methods
+        .depositTokens(amount) // Pass the deposit amount
+        .accountsPartial({
+          market: marketPDA,
+          userAccount: account, // User's public key
+          userLenAccount: account, // TODO change this
+          userTokenAccount, // Associated token account for the user
+          lenMint: new PublicKey("AM2UdPbBLBCfr9sShJicSTPSQM8ryq8faioD2oQ6G7t6"), // The mint of the token being deposited
+          tokenProgram: TOKEN_PROGRAM_ID,
+        })
+        .rpc();
     },
+    onSuccess: (tx) => {
+      transactionToast(tx);
+      return accountQuery.refetch();
+    },
+    onError: () => toast.error('Failed to complete deposit.'),
   })
 
   const decrementMutation = useMutation({
