@@ -4,9 +4,13 @@ anchor_version = "0.30.1"
 [features]
 resolution = true
 skip-lint = false
+idl = true
 
 [programs.localnet]
-lentum = "Hc6k9QpHwpvG7jndx9EEE42M28DZ6EHEedogVCyjt7mL"
+lentum = "LentumHwpvG7jndx9EEE42M28DZ6EHEedogVCyjt7mL"
+
+[programs.devnet]
+lentum = "LentumHwpvG7jndx9EEE42M28DZ6EHEedogVCyjt7mL"
 
 [registry]
 url = "https://api.apr.dev"

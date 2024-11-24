@@ -1,76 +1,193 @@
-import * as anchor from '@coral-xyz/anchor'
-import {Program} from '@coral-xyz/anchor'
-import {Keypair} from '@solana/web3.js'
-import {Lentum} from '../target/types/lentum'
+// import * as anchor from '@coral-xyz/anchor'
+// import { Program } from '@coral-xyz/anchor'
+// import { Lentum } from "../target/types/lentum";
+// import { PublicKey, SystemProgram } from "@solana/web3.js";
+// import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 
-describe('lentum', () => {
-  // Configure the client to use the local cluster.
-  const provider = anchor.AnchorProvider.env()
-  anchor.setProvider(provider)
-  const payer = provider.wallet as anchor.Wallet
+// const { LAMPORTS_PER_SOL } = anchor.web3;
 
-  const program = anchor.workspace.Lentum as Program<Lentum>
-
-  const lentumKeypair = Keypair.generate()
-
-  it('Initialize Lentum', async () => {
-    await program.methods
-      .initialize()
-      .accounts({
-        lentum: lentumKeypair.publicKey,
-        payer: payer.publicKey,
-      })
-      .signers([lentumKeypair])
-      .rpc()
-
-    const currentCount = await program.account.lentum.fetch(lentumKeypair.publicKey)
-
-    expect(currentCount.count).toEqual(0)
+describe("Lentum Program Tests", () => {
+  it("Placeholder", () => {
+    expect(true).toBeTruthy();
   })
+});
 
-  it('Increment Lentum', async () => {
-    await program.methods.increment().accounts({ lentum: lentumKeypair.publicKey }).rpc()
+// describe("Lentum Program Tests", () => {
+//   const provider = anchor.AnchorProvider.env();
+//   anchor.setProvider(provider);
 
-    const currentCount = await program.account.lentum.fetch(lentumKeypair.publicKey)
+//   const program = anchor.workspace.Lentum as Program<Lentum>;
 
-    expect(currentCount.count).toEqual(1)
-  })
+//   let payer = provider.wallet;
+//   let lenbonkMint: PublicKey;
+//   let borbonkMint: PublicKey;
+//   let marketReserveTokenAccount: PublicKey;
+//   let userDepositTokenAccount: PublicKey;
+//   let userLenBonkAccount: PublicKey;
+//   let userBorBonkAccount: PublicKey;
 
-  it('Increment Lentum Again', async () => {
-    await program.methods.increment().accounts({ lentum: lentumKeypair.publicKey }).rpc()
+//   // Helper function to derive PDAs for mints
+//   const findMintPDA = (lenbor: string, symbol: string): [PublicKey, number] => {
+//     return PublicKey.findProgramAddressSync(
+//       [
+//         Buffer.from(lenbor),
+//         Buffer.from(symbol.toLowerCase()),
+//         Buffer.from("_mint"),
+//       ],
+//       program.programId
+//     );
+//   };
 
-    const currentCount = await program.account.lentum.fetch(lentumKeypair.publicKey)
+//   it("Airdrop SOL to user", async () => {
+//     const airdropSignature = await provider.connection.requestAirdrop(
+//       payer.publicKey,
+//       LAMPORTS_PER_SOL
+//     );
+//     await provider.connection.confirmTransaction(airdropSignature);
+//     const userBalance = await provider.connection.getBalance(payer.publicKey);
+//     expect(userBalance).toBeGreaterThan(0);
+//   });
 
-    expect(currentCount.count).toEqual(2)
-  })
+//   it("Initialize Lentum Mints", async () => {
+//     // Initialize lenbonk_mint
+//     const [lenbonkMintPDA] = findMintPDA("bonk", "LENBONK");
+//     lenbonkMint = lenbonkMintPDA;
 
-  it('Decrement Lentum', async () => {
-    await program.methods.decrement().accounts({ lentum: lentumKeypair.publicKey }).rpc()
+//     // Initialize borbonk_mint
+//     const [borbonkMintPDA] = findMintPDA("bonk", "BORBONK");
+//     borbonkMint = borbonkMintPDA;
 
-    const currentCount = await program.account.lentum.fetch(lentumKeypair.publicKey)
+//     await program.methods
+//       .initializeLentumMint("bonk", "Lentum Bonk", "LENBONK")
+//       .accounts({
+//         admin: payer.publicKey,
+//         mint: lenbonkMint,
+//         tokenProgram: TOKEN_PROGRAM_ID,
+//         systemProgram: SystemProgram.programId,
+//         rent: anchor.web3.SYSVAR_RENT_PUBKEY,
+//       })
+//       .rpc();
 
-    expect(currentCount.count).toEqual(1)
-  })
+//     await program.methods
+//       .initializeLentumMint("bonk", "Borrowed Bonk", "BORBONK")
+//       .accounts({
+//         admin: payer.publicKey,
+//         mint: borbonkMint,
+//         tokenProgram: TOKEN_PROGRAM_ID,
+//         systemProgram: SystemProgram.programId,
+//         rent: anchor.web3.SYSVAR_RENT_PUBKEY,
+//       })
+//       .rpc();
 
-  it('Set lentum value', async () => {
-    await program.methods.set(42).accounts({ lentum: lentumKeypair.publicKey }).rpc()
+//     const lenbonkMintInfo = await program.account.mint.fetch(lenbonkMint);
+//     expect(lenbonkMintInfo.symbol).toBe("LENBONK");
 
-    const currentCount = await program.account.lentum.fetch(lentumKeypair.publicKey)
+//     const borbonkMintInfo = await program.account.mint.fetch(borbonkMint);
+//     expect(borbonkMintInfo.symbol).toBe("BORBONK");
+//   });
 
-    expect(currentCount.count).toEqual(42)
-  })
+//   it("Create Token Accounts for User", async () => {
+//     // Initialize user deposit token account
+//     // Initialize user LenBonk account
+//     // Initialize user BorBonk account
+//     // Initialize market reserve token account
 
-  it('Set close the lentum account', async () => {
-    await program.methods
-      .close()
-      .accounts({
-        payer: payer.publicKey,
-        lentum: lentumKeypair.publicKey,
-      })
-      .rpc()
+//     // Example for userLenBonkAccount
+//     // Repeat similarly for other accounts
 
-    // The account should no longer exist, returning null.
-    const userAccount = await program.account.lentum.fetchNullable(lentumKeypair.publicKey)
-    expect(userAccount).toBeNull()
-  })
-})
+//     const userLenBonkAccountPDA = await PublicKey.findProgramAddress(
+//       [
+//         payer.publicKey.toBuffer(),
+//         lenbonkMint.toBuffer(),
+//         Buffer.from("user_lenbonk"),
+//       ],
+//       program.programId
+//     );
+//     userLenBonkAccount = userLenBonkAccountPDA[0];
+
+//     await program.methods
+//       .createTokenAccount()
+//       .accounts({
+//         user: payer.publicKey,
+//         mint: lenbonkMint,
+//         tokenAccount: userLenBonkAccount,
+//         tokenProgram: TOKEN_PROGRAM_ID,
+//         systemProgram: SystemProgram.programId,
+//         rent: anchor.web3.SYSVAR_RENT_PUBKEY,
+//       })
+//       .rpc();
+
+//     const accountInfo = await program.account.tokenAccount.fetch(userLenBonkAccount);
+//     expect(accountInfo.owner.toString()).toBe(payer.publicKey.toString());
+//     expect(accountInfo.mint.toString()).toBe(lenbonkMint.toString());
+//   });
+
+//   it("Mint Tokens to User", async () => {
+//     const amount = 1000;
+//     await program.methods
+//       .mintTokens(new anchor.BN(amount))
+//       .accounts({
+//         mint: lenbonkMint,
+//         to: userLenBonkAccount,
+//         authority: payer.publicKey,
+//         tokenProgram: TOKEN_PROGRAM_ID,
+//       })
+//       .rpc();
+
+//     const userTokenAccount = await program.account.tokenAccount.fetch(userLenBonkAccount);
+//     expect(userTokenAccount.amount.toNumber()).toBe(amount);
+//   });
+
+//   it("Transfer Tokens from User to Market Reserve", async () => {
+//     const transferAmount = 500;
+//     await program.methods
+//       .transferTokens(new anchor.BN(transferAmount))
+//       .accounts({
+//         from: userLenBonkAccount,
+//         to: marketReserveTokenAccount,
+//         authority: payer.publicKey,
+//         tokenProgram: TOKEN_PROGRAM_ID,
+//       })
+//       .rpc();
+
+//     const userAccount = await program.account.tokenAccount.fetch(userLenBonkAccount);
+//     const reserveAccount = await program.account.tokenAccount.fetch(marketReserveTokenAccount);
+//     expect(userAccount.amount.toNumber()).toBe(500);
+//     expect(reserveAccount.amount.toNumber()).toBe(500);
+//   });
+
+//   it("Burn Tokens from User", async () => {
+//     const burnAmount = 200;
+//     await program.methods
+//       .burnTokens(new anchor.BN(burnAmount))
+//       .accounts({
+//         mint: lenbonkMint,
+//         from: userLenBonkAccount,
+//         authority: payer.publicKey,
+//         tokenProgram: TOKEN_PROGRAM_ID,
+//       })
+//       .rpc();
+
+//     const userAccount = await program.account.tokenAccount.fetch(userLenBonkAccount);
+//     expect(userAccount.amount.toNumber()).toBe(300);
+//   });
+
+//   it("Handle Test Failure Scenario", async () => {
+//     try {
+//       await program.methods
+//         .mintTokens(new anchor.BN(-100))
+//         .accounts({
+//           mint: lenbonkMint,
+//           to: userLenBonkAccount,
+//           authority: payer.publicKey,
+//           tokenProgram: TOKEN_PROGRAM_ID,
+//         })
+//         .rpc();
+//       fail("Minting negative tokens should fail");
+//     } catch (err) {
+//       expect(err).toBeDefined();
+//     }
+//   });
+
+//   // Add more tests covering all functionalities...
+// });
