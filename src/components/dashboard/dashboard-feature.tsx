@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
+
 import { AppHero } from '../ui/ui-layout';
 import { Coin } from '../../types/Coin';
 import { WalletButton } from '../solana/solana-provider';
-import TokenActionModal from '../modals/token-action-modal'; // Ensure correct import path
+import TokenActionModal from '../modals/token-action-modal'; // Ensure correct import 
 
 const DashboardFeature: React.FC = () => {
   // State to manage the modal visibility and content
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedCoin, setSelectedCoin] = useState<Coin | null>(null);
   const [action, setAction] = useState<string>('');
-  const [isRiskModalOpen, setIsRiskModalOpen] = useState<boolean>(false); // New state for the risk metrics modal
-
+  
   // Totals and overall risk parameters
   const [totalSupplied, setTotalSupplied] = useState<number>(0);
   const [totalBorrowed, setTotalBorrowed] = useState<number>(0);
@@ -176,10 +176,7 @@ const DashboardFeature: React.FC = () => {
     setAction('');
   };
 
-  const toggleRiskModal = () => {
-    setIsRiskModalOpen(!isRiskModalOpen);
-  };
-
+   
   return (
     <div>
       <div className="flex justify-end p-4">
@@ -196,7 +193,8 @@ const DashboardFeature: React.FC = () => {
         {totalSupplied.toLocaleString()}
       </p>
     </div>
-
+     
+    
     {/* Overall Health Score */}
     <div className="p-6 bg-white rounded shadow">
       <h3 className="text-sm font-medium text-gray-500 text-center">Overall Health Score</h3>
@@ -281,9 +279,11 @@ const DashboardFeature: React.FC = () => {
                 </button>
               </div>
             </div>
+          
           ))}
         </div>
   
+        
         {isModalOpen && selectedCoin && (
           <TokenActionModal
             coin={selectedCoin}

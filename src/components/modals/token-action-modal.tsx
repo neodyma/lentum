@@ -1,4 +1,3 @@
-// src/components/modals/token-action-modal.tsx
 import React, { useState } from 'react';
 import { Coin } from '../../types/Coin';
 import { useWallet } from '@solana/wallet-adapter-react';
@@ -16,15 +15,11 @@ interface TokenActionModalProps {
 
 const TokenActionModal: React.FC<TokenActionModalProps> = ({ coin, action, onClose }) => {
   const { publicKey, sendTransaction } = useWallet();
-  const [amount1, setAmount1] = useState<string>('');
-  const [amount2, setAmount2] = useState<string>('');
+  const [amount, setAmount] = useState<string>('');
 
   const connection = new Connection('https://api.mainnet-beta.solana.com');
 
-  const handleAmountChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    setAmount: React.Dispatch<React.SetStateAction<string>>
-  ) => {
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     // Only allow numbers and decimals
     if (value === '' || /^\d*\.?\d*$/.test(value)) {
@@ -39,17 +34,14 @@ const TokenActionModal: React.FC<TokenActionModalProps> = ({ coin, action, onClo
       return;
     }
 
-    // Validate amount fields if necessary
-    // For example, ensure that at least one amount is entered
-    if (!amount1 && !amount2) {
-      alert('Please enter at least one amount.');
+    if (!amount) {
+      alert('Please enter an amount.');
       return;
     }
 
     try {
-      // Token mint address
       const tokenMintAddress = new PublicKey(coin.tokenMintAddress);
-      
+
       // Get the associated token account address for the user's wallet
       const associatedTokenAddress = await getAssociatedTokenAddress(
         tokenMintAddress,
@@ -58,7 +50,7 @@ const TokenActionModal: React.FC<TokenActionModalProps> = ({ coin, action, onClo
 
       // Check if the associated token account exists
       const accountInfo = await connection.getAccountInfo(associatedTokenAddress);
-      
+
       if (accountInfo === null) {
         // The account doesn't exist, so we need to create it
         const ataInstruction = createAssociatedTokenAccountInstruction(
@@ -68,12 +60,11 @@ const TokenActionModal: React.FC<TokenActionModalProps> = ({ coin, action, onClo
           tokenMintAddress // Mint
         );
 
-        // Build the transaction
         const transaction = new Transaction().add(ataInstruction);
-        
+
         // Send the transaction
         const signature = await sendTransaction(transaction, connection);
-        
+
         // Confirm the transaction
         await connection.confirmTransaction(signature, 'confirmed');
         console.log(`Created associated token account: ${associatedTokenAddress.toBase58()}`);
@@ -81,13 +72,9 @@ const TokenActionModal: React.FC<TokenActionModalProps> = ({ coin, action, onClo
         console.log('Associated token account already exists');
       }
 
-      // Here, you can incorporate the amounts into your logic
-      // For example, transferring tokens, staking, etc.
+      console.log(`Added ${coin.name} to wallet with amount: ${amount}`);
 
-      console.log(`Added ${coin.name} to wallet with amounts: ${amount1}, ${amount2}`);
-
-      // Optionally, you can reset the form or provide user feedback
-      alert(`${coin.name} added to wallet successfully.`);
+      alert(`${coin.name} added to wallet successfully with amount ${amount}.`);
       onClose();
     } catch (error) {
       console.error('Error adding token to wallet:', error);
@@ -113,36 +100,20 @@ const TokenActionModal: React.FC<TokenActionModalProps> = ({ coin, action, onClo
           <p>
             You are about to <strong>{action.toLowerCase()}</strong> <strong>{coin.name}</strong>.
           </p>
-          
-          {/* Amount Input Fields */}
-          <div className="space-y-3">
-            <div>
-              <label htmlFor="amount1" className="block text-sm font-medium text-gray-700">
-                First Amount
-              </label>
-              <input
-                id="amount1"
-                type="text"
-                value={amount1}
-                onChange={(e) => handleAmountChange(e, setAmount1)}
-                className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                placeholder="Enter first amount"
-              />
-            </div>
-            
-            <div>
-              <label htmlFor="amount2" className="block text-sm font-medium text-gray-700">
-                Second Amount
-              </label>
-              <input
-                id="amount2"
-                type="text"
-                value={amount2}
-                onChange={(e) => handleAmountChange(e, setAmount2)}
-                className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                placeholder="Enter second amount"
-              />
-            </div>
+
+          {/* Amount Input Field */}
+          <div>
+            <label htmlFor="amount" className="block text-sm font-medium text-gray-700">
+              Amount
+            </label>
+            <input
+              id="amount"
+              type="text"
+              value={amount}
+              onChange={handleAmountChange}
+              className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              placeholder="Enter amount"
+            />
           </div>
         </div>
 
