@@ -1,72 +1,45 @@
-#![allow(clippy::result_large_err)]
-
 use anchor_lang::prelude::*;
 
-declare_id!("Hc6k9QpHwpvG7jndx9EEE42M28DZ6EHEedogVCyjt7mL");
+mod contexts;
+use contexts::*;
 
-pub mod market;
+mod state;
+use state::*;
+
+mod error;
+use error::*;
+
+declare_id!("LentumHwpvG7jndx9EEE42M28DZ6EHEedogVCyjt7mL");
 
 #[program]
 pub mod lentum {
     use super::*;
 
-    pub fn close(_ctx: Context<CloseLentum>) -> Result<()> {
-        Ok(())
+    pub fn initialize_market(ctx: Context<InitializeMarket>) -> Result<()> {
+        let params = InitializeParams {
+            owner: *ctx.program_id,
+            reserve: Pubkey::default(),
+            interest_rate_model: Pubkey::default(),
+            initial_liquidity: 0,
+            fee_percentage: 0,
+        };
+
+        ctx.accounts.initialize_market(params)
     }
 
-    pub fn decrement(ctx: Context<Update>) -> Result<()> {
-        ctx.accounts.lentum.count = ctx.accounts.lentum.count.checked_sub(1).unwrap();
-        Ok(())
+    pub fn deposit_tokens(ctx: Context<DepositTokens>, amount: u64) -> Result<()> {
+        ctx.accounts.deposit_tokens(amount)
     }
 
-    pub fn increment(ctx: Context<Update>) -> Result<()> {
-        ctx.accounts.lentum.count = ctx.accounts.lentum.count.checked_add(1).unwrap();
-        Ok(())
+    pub fn withdraw_tokens(ctx: Context<WithdrawTokens>, amount: u64) -> Result<()> {
+        ctx.accounts.withdraw_tokens(amount)
     }
 
-    pub fn initialize(_ctx: Context<InitializeLentum>) -> Result<()> {
-        Ok(())
+    pub fn borrow_tokens(ctx: Context<BorrowTokens>, amount: u64) -> Result<()> {
+        ctx.accounts.borrow_tokens(amount)
     }
 
-    pub fn set(ctx: Context<Update>, value: u8) -> Result<()> {
-        ctx.accounts.lentum.count = value.clone();
-        Ok(())
+    pub fn repay_borrow(ctx: Context<RepayBorrow>, amount: u64) -> Result<()> {
+        ctx.accounts.repay_borrow(amount)
     }
-}
-
-#[derive(Accounts)]
-pub struct InitializeLentum<'info> {
-    #[account(mut)]
-    pub payer: Signer<'info>,
-
-    #[account(
-  init,
-  space = 8 + Lentum::INIT_SPACE,
-  payer = payer
-  )]
-    pub lentum: Account<'info, Lentum>,
-    pub system_program: Program<'info, System>,
-}
-#[derive(Accounts)]
-pub struct CloseLentum<'info> {
-    #[account(mut)]
-    pub payer: Signer<'info>,
-
-    #[account(
-  mut,
-  close = payer, // close account and return lamports to payer
-  )]
-    pub lentum: Account<'info, Lentum>,
-}
-
-#[derive(Accounts)]
-pub struct Update<'info> {
-    #[account(mut)]
-    pub lentum: Account<'info, Lentum>,
-}
-
-#[account]
-#[derive(InitSpace)]
-pub struct Lentum {
-    count: u8,
 }

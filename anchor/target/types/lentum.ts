@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/lentum.json`.
  */
 export type Lentum = {
-  "address": "Hc6k9QpHwpvG7jndx9EEE42M28DZ6EHEedogVCyjt7mL",
+  "address": "LentumHwpvG7jndx9EEE42M28DZ6EHEedogVCyjt7mL",
   "metadata": {
     "name": "lentum",
     "version": "0.1.0",
@@ -14,138 +14,739 @@ export type Lentum = {
   },
   "instructions": [
     {
-      "name": "close",
+      "name": "borrowTokens",
       "discriminator": [
         98,
-        165,
-        201,
-        177,
-        108,
-        65,
-        206,
-        96
-      ],
-      "accounts": [
-        {
-          "name": "payer",
-          "writable": true,
-          "signer": true
-        },
-        {
-          "name": "lentum",
-          "writable": true
-        }
-      ],
-      "args": []
-    },
-    {
-      "name": "decrement",
-      "discriminator": [
-        106,
-        227,
-        168,
-        59,
-        248,
-        27,
-        150,
-        101
-      ],
-      "accounts": [
-        {
-          "name": "lentum",
-          "writable": true
-        }
-      ],
-      "args": []
-    },
-    {
-      "name": "increment",
-      "discriminator": [
-        11,
+        145,
         18,
-        104,
-        9,
-        104,
-        174,
-        59,
-        33
+        209,
+        129,
+        98,
+        215,
+        25
       ],
       "accounts": [
         {
-          "name": "lentum",
+          "name": "userAccount",
           "writable": true
-        }
-      ],
-      "args": []
-    },
-    {
-      "name": "initialize",
-      "discriminator": [
-        175,
-        175,
-        109,
-        31,
-        13,
-        152,
-        155,
-        237
-      ],
-      "accounts": [
+        },
         {
-          "name": "payer",
+          "name": "market",
           "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  110,
+                  116,
+                  117,
+                  109,
+                  77,
+                  97,
+                  114,
+                  107,
+                  101,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "reserveTokenAccount",
+          "writable": true
+        },
+        {
+          "name": "userTokenAccount",
+          "writable": true
+        },
+        {
+          "name": "userBorAccount",
+          "writable": true
+        },
+        {
+          "name": "userLenbonkAccount",
+          "writable": true
+        },
+        {
+          "name": "userLenjupAccount",
+          "writable": true
+        },
+        {
+          "name": "userLenlinkAccount",
+          "writable": true
+        },
+        {
+          "name": "userLensolAccount",
+          "writable": true
+        },
+        {
+          "name": "userLenusdcAccount",
+          "writable": true
+        },
+        {
+          "name": "userLenusdtAccount",
+          "writable": true
+        },
+        {
+          "name": "userLenwifAccount",
+          "writable": true
+        },
+        {
+          "name": "authority",
           "signer": true
         },
         {
-          "name": "lentum",
+          "name": "borMint"
+        },
+        {
+          "name": "tokenProgram",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "depositTokens",
+      "discriminator": [
+        176,
+        83,
+        229,
+        18,
+        191,
+        143,
+        176,
+        150
+      ],
+      "accounts": [
+        {
+          "name": "userAccount",
+          "writable": true
+        },
+        {
+          "name": "market",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  110,
+                  116,
+                  117,
+                  109,
+                  77,
+                  97,
+                  114,
+                  107,
+                  101,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "reserveTokenAccount",
+          "writable": true
+        },
+        {
+          "name": "userTokenAccount",
+          "writable": true
+        },
+        {
+          "name": "userLenAccount",
+          "writable": true
+        },
+        {
+          "name": "authority",
+          "signer": true
+        },
+        {
+          "name": "lenMint"
+        },
+        {
+          "name": "tokenProgram",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "initializeMarket",
+      "discriminator": [
+        35,
+        35,
+        189,
+        193,
+        155,
+        48,
+        170,
+        203
+      ],
+      "accounts": [
+        {
+          "name": "market",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  110,
+                  116,
+                  117,
+                  109,
+                  77,
+                  97,
+                  114,
+                  107,
+                  101,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
           "writable": true,
           "signer": true
         },
         {
           "name": "systemProgram",
           "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        },
+        {
+          "name": "tokenProgram",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "lenbonkMint",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  110,
+                  98,
+                  111,
+                  110,
+                  107,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "lenjupMint",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  110,
+                  106,
+                  117,
+                  112,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "lenlinkMint",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  110,
+                  108,
+                  105,
+                  110,
+                  107,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "lensolMint",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  110,
+                  115,
+                  111,
+                  108,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "lenusdcMint",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  110,
+                  117,
+                  115,
+                  100,
+                  99,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "lenusdtMint",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  110,
+                  117,
+                  115,
+                  100,
+                  116,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "lenwifMint",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  110,
+                  119,
+                  105,
+                  102,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "borbonkMint",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  111,
+                  114,
+                  98,
+                  111,
+                  110,
+                  107,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "borjupMint",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  111,
+                  114,
+                  106,
+                  117,
+                  112,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "borlinkMint",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  111,
+                  114,
+                  108,
+                  105,
+                  110,
+                  107,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "borsolMint",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  111,
+                  114,
+                  115,
+                  111,
+                  108,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "borusdcMint",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  111,
+                  114,
+                  117,
+                  115,
+                  100,
+                  99,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "borusdtMint",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  111,
+                  114,
+                  117,
+                  115,
+                  100,
+                  116,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "borwifMint",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  111,
+                  114,
+                  119,
+                  105,
+                  102,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
         }
       ],
       "args": []
     },
     {
-      "name": "set",
+      "name": "repayBorrow",
       "discriminator": [
-        198,
-        51,
-        53,
-        241,
-        116,
-        29,
+        35,
+        69,
+        75,
+        58,
+        112,
+        201,
         126,
-        194
+        14
       ],
       "accounts": [
         {
-          "name": "lentum",
+          "name": "userAccount",
           "writable": true
+        },
+        {
+          "name": "market",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  110,
+                  116,
+                  117,
+                  109,
+                  77,
+                  97,
+                  114,
+                  107,
+                  101,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "reserveTokenAccount",
+          "writable": true
+        },
+        {
+          "name": "userTokenAccount",
+          "writable": true
+        },
+        {
+          "name": "userBorAccount",
+          "writable": true
+        },
+        {
+          "name": "authority",
+          "signer": true
+        },
+        {
+          "name": "borMint"
+        },
+        {
+          "name": "tokenProgram",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
         }
       ],
       "args": [
         {
-          "name": "value",
-          "type": "u8"
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "withdrawTokens",
+      "discriminator": [
+        2,
+        4,
+        225,
+        61,
+        19,
+        182,
+        106,
+        170
+      ],
+      "accounts": [
+        {
+          "name": "userAccount",
+          "writable": true
+        },
+        {
+          "name": "market",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  110,
+                  116,
+                  117,
+                  109,
+                  77,
+                  97,
+                  114,
+                  107,
+                  101,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "reserveTokenAccount",
+          "writable": true
+        },
+        {
+          "name": "userTokenAccount",
+          "writable": true
+        },
+        {
+          "name": "userLenAccount",
+          "writable": true
+        },
+        {
+          "name": "authority",
+          "signer": true
+        },
+        {
+          "name": "lenMint"
+        },
+        {
+          "name": "tokenProgram",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
         }
       ]
     }
   ],
   "accounts": [
     {
-      "name": "lentum",
+      "name": "market",
       "discriminator": [
-        82,
-        125,
-        86,
-        154,
-        182,
-        24,
+        219,
         190,
-        21
+        213,
+        55,
+        0,
+        227,
+        198,
+        154
+      ]
+    },
+    {
+      "name": "userAccount",
+      "discriminator": [
+        211,
+        33,
+        136,
+        16,
+        186,
+        110,
+        242,
+        127
       ]
     }
   ],
@@ -174,17 +775,209 @@ export type Lentum = {
       "code": 6004,
       "name": "insufficientAvailableDeposits",
       "msg": "Not enough available deposits."
+    },
+    {
+      "code": 6005,
+      "name": "insufficientLiquidity",
+      "msg": "Insufficient liquidity in the market."
+    },
+    {
+      "code": 6006,
+      "name": "insufficientCollateral",
+      "msg": "Insufficient collateral provided."
+    },
+    {
+      "code": 6007,
+      "name": "maxBorrowsExceeded",
+      "msg": "Maximum number of borrows exceeded."
+    },
+    {
+      "code": 6008,
+      "name": "borrowNotFound",
+      "msg": "Borrow not found."
+    },
+    {
+      "code": 6009,
+      "name": "repayAmountExceedsBorrow",
+      "msg": "Repay amount exceeds borrowed amount."
+    },
+    {
+      "code": 6010,
+      "name": "notUnderCollateralized",
+      "msg": "User is not undercollateralized."
+    },
+    {
+      "code": 6011,
+      "name": "insufficientCollateralAfterWithdrawal",
+      "msg": "Insufficient collateral after withdrawal."
+    },
+    {
+      "code": 6012,
+      "name": "unauthorized",
+      "msg": "Unauthorized."
     }
   ],
   "types": [
     {
-      "name": "lentum",
+      "name": "market",
       "type": {
         "kind": "struct",
         "fields": [
           {
-            "name": "count",
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "reserve",
+            "type": "pubkey"
+          },
+          {
+            "name": "interestRateModel",
+            "type": "pubkey"
+          },
+          {
+            "name": "lastInterestUpdate",
+            "type": "i64"
+          },
+          {
+            "name": "liquidity",
+            "type": "u64"
+          },
+          {
+            "name": "totalBorrows",
+            "type": "u64"
+          },
+          {
+            "name": "feePercentage",
             "type": "u8"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "lenbonkMint",
+            "type": "pubkey"
+          },
+          {
+            "name": "lenjupMint",
+            "type": "pubkey"
+          },
+          {
+            "name": "lenlinkMint",
+            "type": "pubkey"
+          },
+          {
+            "name": "lensolMint",
+            "type": "pubkey"
+          },
+          {
+            "name": "lenusdcMint",
+            "type": "pubkey"
+          },
+          {
+            "name": "lenusdtMint",
+            "type": "pubkey"
+          },
+          {
+            "name": "lenwifMint",
+            "type": "pubkey"
+          },
+          {
+            "name": "borbonkMint",
+            "type": "pubkey"
+          },
+          {
+            "name": "borjupMint",
+            "type": "pubkey"
+          },
+          {
+            "name": "borlinkMint",
+            "type": "pubkey"
+          },
+          {
+            "name": "borsolMint",
+            "type": "pubkey"
+          },
+          {
+            "name": "borusdcMint",
+            "type": "pubkey"
+          },
+          {
+            "name": "borusdtMint",
+            "type": "pubkey"
+          },
+          {
+            "name": "borwifMint",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "userAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "lenbonkAccount",
+            "type": "pubkey"
+          },
+          {
+            "name": "lenjupAccount",
+            "type": "pubkey"
+          },
+          {
+            "name": "lenlinkAccount",
+            "type": "pubkey"
+          },
+          {
+            "name": "lensolAccount",
+            "type": "pubkey"
+          },
+          {
+            "name": "lenusdcAccount",
+            "type": "pubkey"
+          },
+          {
+            "name": "lenusdtAccount",
+            "type": "pubkey"
+          },
+          {
+            "name": "lenwifAccount",
+            "type": "pubkey"
+          },
+          {
+            "name": "borbonkAccount",
+            "type": "pubkey"
+          },
+          {
+            "name": "borjupAccount",
+            "type": "pubkey"
+          },
+          {
+            "name": "borlinkAccount",
+            "type": "pubkey"
+          },
+          {
+            "name": "borsolAccount",
+            "type": "pubkey"
+          },
+          {
+            "name": "borusdcAccount",
+            "type": "pubkey"
+          },
+          {
+            "name": "borusdtAccount",
+            "type": "pubkey"
+          },
+          {
+            "name": "borwifAccount",
+            "type": "pubkey"
           }
         ]
       }
